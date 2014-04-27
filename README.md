@@ -1,0 +1,5 @@
+openMSsig is a PHP web application I wrote in 2008. It was my first publically released software. It makes me cringe a little to look at the code now, but it's pretty well commented at least. The code was hosted at http://sourceforge.net/projects/openmssig/. I've moved it here so my past projects are all in one place. There's only one commit because openMSsig did not use source control. I did not know about it at the time.
+
+openMSsig is a PHP framework for dynamically generating forum signature images that use up-to-date character data from the website of the popular MMORPG MapleStory. It does not cache the generated images server-side so it generates an image for each unique person viewing the signature. It's a miracle I didn't get my friend kicked off his shared hosting because of that.
+
+Since I stopped maintaining it, it has not kept up with changes to the Maple Story website so parsing character data does not work anymore.

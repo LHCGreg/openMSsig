@@ -1,0 +1,53 @@
+Options -Indexes
+
+# If you are using an Apache web server, you can take one of the options in this file to change how users can
+# access their sig image. If you are not using an Apache web server, do not use this file.
+# To have the desired effect, this file must be in the directory users will access their sig with, your host must allow the use
+# of .htaccess files (most do), you must uncomment the appropriate lines and rename any urls in the directive to
+# what they actually are, and if you are using option 4, your Apache web server must have the mod_rewrite Apache module
+
+# Option 1: MSsig.php?char=theirchar
+# Option 2: MSsig.png?char=theirchar
+# Option 3: theirchar.png
+# Option 4: theirchar.png [this option is cleaner than option 3]
+
+# In all options, MSsig.php must be web-accessible.
+
+# NOTHING IS DONE BY DEFAULT! To change the behavior, you must uncomment the appropriate lines for the option you want (except
+# for option 1, which does nothing)
+
+
+# Option 1: Do nothing special; users will use MSsig.php?char=theirchar&bg=background
+
+
+# Option 2: Rename MSsig.php to MSsig.png (or .gif or .jpg or whatever, as long as you change the line below accordingly)
+# And uncomment the <Files .... </Files> lines below
+#
+# Users access with MSsig.png?char=theirchar&bg=background
+# This has the advantage of "looking like an image file name" to users
+#
+#<Files MSsig.png>
+#	SetHandler application/x-httpd-php
+#</Files>
+
+
+# Option 3: Do not rename anything. Uncomment the RedirectMatch line below.
+# This will allow users to get their sig at theirchar.png (followed by ?bg=background and other options optionally)
+# It does this by telling the user's browser to go to MSsig.php?char=.... instead, which the user will not notice if the image
+# is part of another page.
+
+# Remember to replace http://localhost/MSsig/MSsig.php with the actual URL to the script
+
+# RedirectMatch (?i)^/MSsig/([^/]*?).(gif|png|jpg|jpeg)(?:\?(.*))?$ "http://localhost/MSsig/MSsig.php?char=$1\&out=$2\&$3"
+
+
+
+# Option 4: This is the best option, however it requires the mod_rewrite Apache module.
+# It is like Option 3, (theirchar.png) but simply executes the script with the correct parameters instead of redirecting the browser.
+
+# The script itself must still be web-accessible, but you do not need to tell users where it is.
+# Remember to replace http://localhost/MSsig/MSsig.php with the URL of the script.
+
+# Options +FollowSymlinks # required for using the Rewrite module. If your host has this set to off in the main config and prevents you from overriding that, you're out of luck. It's on by default.
+# RewriteEngine on
+# RewriteRule (?i)^([^/]*?).(gif|png|jpg|jpeg)(?:\?(.*))?$ "http://localhost/MSsig/MSsig.php?char=$1\&out=$2\&$3"

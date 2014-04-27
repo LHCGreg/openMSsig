@@ -1,0 +1,82 @@
+INSTALLATION INSTRUCTIONS
+
+Requirements:
+
+* PHP 5.0.0 or higher
+* allow_url_fopen PHP config option enabled
+* GD Image PHP extension that supports GIF, whatever format(s) your backgrounds are in, and whatever format(s) you output as, with the FreeType library for drawing strings
+* PCRE (perl-style regular expressions) PHP extension [enabled by default, you probably don't have to worry about this]
+* Apache web server if you want sig images to be accessible by anything other than MSsig.php?char=charname
+
+-----
+
+Changed files from 2.3.0sp2:
+MSsig.php
+/include/MSsigConfig.php
+
+-----
+
+If your host allows .htaccess files, simply create a directory for openMSsig and dump the contents of web_accessible_directory into it. Then open the .htaccess file that's in web_accessible_directory (the big long one) and edit it according to the instructions inside to get the desired way of users accessing the script. You're done with this step, skip to the next section. Just one thing though: If you want people to see what background images you're offering, remove the .htaccess file from the "backgrounds" directory.
+
+
+If not, you've got a little configuring to do.
+
+Put the files in web_accessible_directory (MSsig.php and .htaccess) into a web accessible directory. If your host is not using the Apache web server, do not put .htaccess there.
+
+Open .htaccess and edit it according to the instructions inside to get the desired way of users accessing the script.
+
+Make a directory in a non-web-accessible directory for the auxilliary files MSsigConfig.php and expTable.php. Put MSsigConfig.php and expTable.php in that directory. Open MSsig.php and edit the line 
+
+$conf_includeDir = './include'; // change this to the directory where expTable.php and MSsigConfig.php are
+
+to reflect the directory MSsigConfig.php and expTable.php are in.
+
+Create a directory to put the server, job, and immigrant images. It need not be web-accessible. Put all the files in the "images" directory into that directory. Set $conf_imageDir in MSsigConfig.php to the location of this directory.
+
+Create a directory to put fonts in (or if you already have a system directory where fonts are stored, that will do). It should not be web-accessible unless you wish to share your fonts. Put all the fonts your wish to use in that directory, including any in the "fonts" directory if you want to use them. Set $conf_fontDir in MSsigConfig.php to the location of this directory.
+
+Create a directory to put background image files. If you wish to use the included sample background image, it is in the "backgrounds" directory. Set $conf_BGDir in MSsigConfig.php to the location of this directory.
+
+Create a directory to put background configuration files. Background configuration files must have the name bg_backgroundname where backgroundname is the name of the background. If you wish to use the included sample background configuration file, it is in the "BGInfo" directory. Set $conf_BGInfoDir in MSsigConfig.php to the location of this directory.
+
+-----
+
+IMPORTANT: You will need to maintain the images directory by adding new job and server images as new jobs and servers are created. The images MUST have a transparent background. The ones on Nexon's site may or may not have a transparent background.
+
+-----
+
+Fonts used by this script must be truetype or truetype compatible such as opentype. (probably with a .ttf or .TTF extension)
+
+-----
+
+If you are using Apache, you can make a web-accessible directory non-web-accessible by putting a .htaccess file in the directory containing the line "deny from all" without the quotes.
+
+You can change a directory so visitors cannot see what the directory contains, but still be able to access the files inside it, by putting a .htaccess file in the directory containing the line "Options -Indexes" without the quotes
+
+-----
+
+Now you are ready to set some configuration options. Open MSsigConfig.php. Set $conf_expires to the amount of time in seconds that is the maximum time a browser should cache the image. Set to 0 to tell the browser to always get a fresh image. The constants SECOND, MINUTE, HOUR, and DAY are provided for your convenience. I do not recommend setting to 0, even if you have the hosting resources to do so. Set it to at least 1 minute so that if there are multiple of the same sig on a page, the browser only loads it once, making the page load faster for the viewer.
+
+Set $conf_defaultOutFormat to the default output format for the image (jpg, jpeg, gif, and png are the possible values). This default is only used if the background configuration does not specify a format and (if you allow users to specify the output format) the user does not specify an output format.
+
+Set $conf_allowVariableOutFormat to true if you want users to be able to specify .jpg, .gif, or .png with ?out=jpg , overriding any recommended format in a background configuration file, otherwise set to false.
+
+Set $conf_getFreshViewstate to true if you want the script to get a fresh __VIEWSTATE from the rankings site each time it is run. Setting this to false *might* cause the script to stop working at some point in the future if viewstates can expire. However, I have not encountered any problems so far, and setting to true incurs the significant time penalty of an extra page download.
+
+Set $conf_defaultBG to the name of the background layout to use if the user does not specify a background. If the layout is named bg_layout.php, then the name of the layout is "layout".
+
+If you wish to use a whitelist or blacklist, set the corresponding option and either create a file called blackwhitelist.php in your include directory that contains the whitelist/blacklist code as described in the MSsigConfig.php documentation (make sure the file begins with "<?php"  and ends with "?>"), or put it right there in the config.
+
+-----
+
+The information to draw on a background image is stored in a corresponding "background configuration file" or "layout file". A background configuration file for a background called xyz must be called bg_xyz.php. A background configuration file contains such information as whether or not to draw the character image, what coordinates to draw it at if so, whether or not to draw the character's level, what color to draw it in, what coordinates to draw it at, etc. I hope the sample bg_boat.php and its documentation is sufficient explanation.
+
+-----
+
+If you have any questions, feel free to PM me (Spaz) on southperry.net, or post on the openMSsig sourceforge page (https://sourceforge.net/projects/openmssig)
+
+-----
+
+Character, pet, job, and world images are copyright Nexon.
+
+This script works with images, so it uses a fair amount of memory. If you have problems, make sure your memory limit is high enough.
